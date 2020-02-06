@@ -29,4 +29,10 @@ public class OI {
     public boolean isGoDistance(){
         return drive.getYButton();
     }
+    public boolean goPid(){
+        return drive.getXButton();
+    }
+    public boolean endPid(){
+        return drive.getBButton();
+    }
 }

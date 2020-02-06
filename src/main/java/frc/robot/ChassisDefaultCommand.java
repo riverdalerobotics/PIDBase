@@ -35,10 +35,14 @@ public class ChassisDefaultCommand extends CommandBase {
       Robot.m_chassis.leftMotorLead.setSelectedSensorPosition(0);
       Robot.m_chassis.rightMotorLead.setSelectedSensorPosition(0);
     }
-    // if(Robot.m_oi.isGoDistance()){
-    //   CommandScheduler.getInstance().schedule(new DriveToDistance(10000));
-    // }
+    if(Robot.m_oi.isGoDistance()){
+      CommandScheduler.getInstance().schedule(new DriveToDistance(2056));
+    }
     Robot.m_chassis.move(Robot.m_oi.getMove(), Robot.m_oi.getTurn());
+
+    if(Robot.m_oi.goPid()){
+      CommandScheduler.getInstance().schedule(new Pid(10000));
+    }
   }
 
   // Called once the command ends or is interrupted.

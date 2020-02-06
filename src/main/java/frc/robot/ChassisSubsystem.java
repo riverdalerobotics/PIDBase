@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,11 +33,11 @@ public class ChassisSubsystem extends SubsystemBase {
     // leftMotorFollow.setSafetyEnabled(false);
     // rightMotorFollow.setSafetyEnabled(false);
 
+    leftMotorLead.setNeutralMode(NeutralMode.Brake);
+    rightMotorLead.setNeutralMode(NeutralMode.Brake);
     leftMotorFollow.follow(leftMotorLead);
     rightMotorFollow.follow(rightMotorLead);
 
-    leftMotorLead.config_kP(0, 0.25);
-   
     rightMotorLead.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     leftMotorLead.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     leftMotorLead.setSensorPhase(true);

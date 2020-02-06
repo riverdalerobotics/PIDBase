@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveToDistance extends CommandBase {
@@ -23,14 +25,15 @@ public class DriveToDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    Robot.m_chassis.leftMotorLead.set(1);
-    Robot.m_chassis.rightMotorLead.set(1);
+    Robot.m_chassis.leftMotorLead.setNeutralMode(NeutralMode.Brake);
+    Robot.m_chassis.rightMotorLead.setNeutralMode(NeutralMode.Brake);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Robot.m_chassis.move(0.7, 0);
+
   }
 
   // Called once the command ends or is interrupted.
