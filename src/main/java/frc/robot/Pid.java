@@ -15,9 +15,10 @@ public class Pid extends CommandBase {
   /**
    * Creates a new Pid.
    */
-  int deadbandThreshold = 50;
-  double P = 0.005;
-  double I,D = 0.001;
+  int deadbandThreshold = 100;
+  double P = 0.00025;
+  double I = 0.000075;
+  double D = 0.00005;
   double startDeadBand;
   int integral, previous_error, setpoint = 0;
   boolean completeFlag;
@@ -27,6 +28,7 @@ public class Pid extends CommandBase {
     this.setpoint = Robot.m_chassis.rightMotorLead.getSelectedSensorPosition() + setPoint;
     completeFlag = false;
   }
+  
 
   // Called when the command is initially scheduled.
 
@@ -36,17 +38,21 @@ public class Pid extends CommandBase {
   
   public double PID(){
     double error = setpoint - Robot.m_chassis.rightMotorLead.getSelectedSensorPosition();
-    integral += error * 0.02;   //Assuming clock is constant and doesn't fluctuate
+    if(error < 5000){
+      integral += error * 0.02;   //Assuming clock is constant and doesn't fluctuate
+
+    }
     double derivative = (error - previous_error);
     double endValue = P * error + I*integral + D*derivative;
-    System.out.println("Error Value " + error);
-    System.out.println("Left Encoder count " + Robot.m_chassis.rightMotorLead.getSelectedSensorPosition());
     return endValue;
 
     
   } 
   @Override
   public void initialize() {
+    Robot.m_chassis.leftMotorLead.configPeakOutputForward(1);
+    Robot.m_chassis.rightMotorLead.configPeakOutputForward(1);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,8 +64,8 @@ public class Pid extends CommandBase {
     int target = currentPos + setpoint;
 
     
-    System.out.println("PID Value" + PID());
-    Robot.m_chassis.move(/*Math.min(Math.max(PID(), -0.4), 0.4)*/PID(), 0);
+    
+    Robot.m_chassis.move(/*Math.min(Math.max(PID(), -0.4), 0.4)*/PID(), 0, true);
 
 
   }
@@ -85,7 +91,7 @@ public class Pid extends CommandBase {
     if(Robot.m_oi.endPid()){
       return true;
     }
-    System.out.println("System time " + System.currentTimeMillis());
+    
     return false;
 
   }

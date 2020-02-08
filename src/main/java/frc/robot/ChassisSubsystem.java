@@ -46,8 +46,12 @@ public class ChassisSubsystem extends SubsystemBase {
   }
   
   
-  public void move(double speed, double turn){
-    driver.arcadeDrive(speed, turn);
+  public void move(double speed, double turn, boolean state){
+    if(state){
+      driver.arcadeDrive(speed, turn);
+    } else {
+      driver.tankDrive(speed, turn);
+    }
   }
 
   public void UpdateSmartDashBoard(){
