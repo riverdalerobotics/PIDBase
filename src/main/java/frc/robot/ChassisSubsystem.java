@@ -60,6 +60,9 @@ public class ChassisSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Left Encoder Count", leftPos);
     SmartDashboard.putNumber("Right Encoder Count", rightPos);
+    
+    SmartDashboard.putNumber("left speed", leftMotorLead.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("right speed", rightMotorLead.getSelectedSensorVelocity());
   }
 
   @Override

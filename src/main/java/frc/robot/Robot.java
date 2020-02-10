@@ -40,6 +40,10 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     CommandScheduler.getInstance().setDefaultCommand(m_chassis, new ChassisDefaultCommand());
+    SmartDashboard.putNumber("P", 0.0003);
+    SmartDashboard.putNumber("I", 0.000075);
+    SmartDashboard.putNumber("D", 0.00005);
+    SmartDashboard.putNumber("Distance", 5000);
   }
 
   /**

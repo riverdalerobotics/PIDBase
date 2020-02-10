@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -36,12 +37,15 @@ public class ChassisDefaultCommand extends CommandBase {
       Robot.m_chassis.rightMotorLead.setSelectedSensorPosition(0);
     }
     if(Robot.m_oi.isGoDistance()){
-      CommandScheduler.getInstance().schedule(new TalonPID(3000));
+      int distance = (int)SmartDashboard.getNumber("Distance", 5000);
+      CommandScheduler.getInstance().schedule(new Pid(distance));
     }
     Robot.m_chassis.move(Robot.m_oi.getMove(), Robot.m_oi.getTurn(), true);
 
     if(Robot.m_oi.goPid()){
-      CommandScheduler.getInstance().schedule(new PidDrive(3000, 3000));
+      int distance = (int)SmartDashboard.getNumber("Distance", 5000);
+
+      CommandScheduler.getInstance().schedule(new PidDrive(distance,distance));
     }
   }
 

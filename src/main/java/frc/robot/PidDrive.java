@@ -18,14 +18,14 @@ public class PidDrive extends CommandBase {
    * Creates a new Pid.
    */
   int deadbandThreshold = 100;
-  double P = 0.00025;
-  double I = 0.000075;
-  double D = 0.00005;
+  double P = SmartDashboard.getNumber("P", 0.0003);//0.0003;
+  double I = SmartDashboard.getNumber("I", 0.000075);//0.000075;
+  double D = SmartDashboard.getNumber("D", 0.00005);//0.00005;
   double startDeadBand;
 
   //index 0 is left, index 1 is right
   int integrals[] = {0, 0};
-  int previous_errors[] = {0, 0};
+  double previous_errors[] = {0, 0};
   int setPoints[] = {0, 0};
   
   int leftTarget;
@@ -34,8 +34,10 @@ public class PidDrive extends CommandBase {
   public PidDrive(int leftTar, int rightTar) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.m_chassis);
-    leftTarget = leftTar + Robot.m_chassis.leftMotorLead.getSelectedSensorPosition();
-    rightTarget = rightTar + Robot.m_chassis.rightMotorLead.getSelectedSensorPosition();
+    leftTarget = leftTar;
+    rightTarget = rightTar;
+    setPoints[0] = leftTar + Robot.m_chassis.leftMotorLead.getSelectedSensorPosition();
+    setPoints[1] = rightTar + Robot.m_chassis.rightMotorLead.getSelectedSensorPosition();
   }
   
 
@@ -47,10 +49,11 @@ public class PidDrive extends CommandBase {
   
   public double PID(int index){
     double error;
+    
     if(index == 0){
-       error = setPoints[index] - Robot.m_chassis.leftMotorLead.getSelectedSensorPosition();
+      error = setPoints[index] - Robot.m_chassis.leftMotorLead.getSelectedSensorPosition();
     } else {
-       error = setPoints[index] - Robot.m_chassis.rightMotorLead.getSelectedSensorPosition();
+      error = setPoints[index] - Robot.m_chassis.rightMotorLead.getSelectedSensorPosition();
     }
     
     if(error < 5000){
@@ -58,8 +61,14 @@ public class PidDrive extends CommandBase {
 
     }
     double derivative = (error - previous_errors[index]);
+
+    previous_errors[index] = error;
+
     double endValue = P * error + I*integrals[index] + D*derivative;
 
+
+    //need to do something with previous error
+    
     return endValue;
 
     
@@ -68,9 +77,6 @@ public class PidDrive extends CommandBase {
   public void initialize() {
     Robot.m_chassis.leftMotorLead.configPeakOutputForward(1);
     Robot.m_chassis.rightMotorLead.configPeakOutputForward(1);
-
-    Robot.m_chassis.rightMotorLead.setInverted(true);
-    Robot.m_chassis.rightMotorFollow.setInverted(true);
 
 
   }
@@ -82,7 +88,7 @@ public class PidDrive extends CommandBase {
     // Robot.m_chassis.leftMotorLead.set(ControlMode.Velocity, 300);//PID(0) * 500 * 4096 / 600
     // Robot.m_chassis.rightMotorLead.set(ControlMode.Velocity, 300);
 
-      Robot.m_chassis.move(PID(0), PID(1), false);
+      Robot.m_chassis.move(PID(0), PID(0), false);
   }
 
   // Called once the command ends or is interrupted.
@@ -90,9 +96,6 @@ public class PidDrive extends CommandBase {
   public void end(boolean interrupted) {
     Robot.m_chassis.rightMotorLead.set(0);
     Robot.m_chassis.rightMotorFollow.set(0);
-
-    Robot.m_chassis.rightMotorLead.setInverted(false);
-    Robot.m_chassis.rightMotorFollow.setInverted(false);
   }
 
   // Returns true when the command should end.

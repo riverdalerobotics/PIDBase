@@ -20,7 +20,8 @@ public class Pid extends CommandBase {
   double I = 0.000075;
   double D = 0.00005;
   double startDeadBand;
-  int integral, previous_error, setpoint = 0;
+  int integral,  setpoint = 0;
+  double previous_error;
   boolean completeFlag;
   public Pid(int setPoint) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -44,6 +45,7 @@ public class Pid extends CommandBase {
     }
     double derivative = (error - previous_error);
     double endValue = P * error + I*integral + D*derivative;
+    previous_error = error;
     return endValue;
 
     
