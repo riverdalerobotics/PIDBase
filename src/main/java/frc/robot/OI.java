@@ -35,5 +35,7 @@ public class OI {
     public boolean endPid(){
         return drive.getBButton();
     }
-
+    public boolean turn(){
+        return drive.getBumper(Hand.kRight);
+    }
 }

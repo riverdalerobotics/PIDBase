@@ -47,6 +47,9 @@ public class ChassisDefaultCommand extends CommandBase {
 
       CommandScheduler.getInstance().schedule(new PidDrive(distance,distance));
     }
+    if(Robot.m_oi.turn()){
+      CommandScheduler.getInstance().schedule(new TurnToAngleCommand(90));
+    }
   }
 
   // Called once the command ends or is interrupted.

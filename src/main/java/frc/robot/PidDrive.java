@@ -88,7 +88,7 @@ public class PidDrive extends CommandBase {
     // Robot.m_chassis.leftMotorLead.set(ControlMode.Velocity, 300);//PID(0) * 500 * 4096 / 600
     // Robot.m_chassis.rightMotorLead.set(ControlMode.Velocity, 300);
 
-      Robot.m_chassis.move(PID(0), PID(0), false);
+      Robot.m_chassis.move(PID(0), PID(1), false);
   }
 
   // Called once the command ends or is interrupted.

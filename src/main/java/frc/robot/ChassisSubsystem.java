@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,6 +25,8 @@ public class ChassisSubsystem extends SubsystemBase {
   
   WPI_TalonSRX rightMotorLead = new WPI_TalonSRX(1);
   WPI_TalonSRX rightMotorFollow = new WPI_TalonSRX(2);
+
+  ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
   DifferentialDrive driver;
 
@@ -63,6 +66,8 @@ public class ChassisSubsystem extends SubsystemBase {
     
     SmartDashboard.putNumber("left speed", leftMotorLead.getSelectedSensorVelocity());
     SmartDashboard.putNumber("right speed", rightMotorLead.getSelectedSensorVelocity());
+
+    SmartDashboard.putNumber("gyro angle", gyro.getAngle());
   }
 
   @Override
